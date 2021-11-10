@@ -1,7 +1,7 @@
-import { SearchDetails } from "../../types/ActionTypes";
+import { DataDetails } from "../../types/ActionTypes";
 import { GET_HISTORY, GET_HISTORY_DONE, HISTORY_ERROR } from "./types";
 
-export const getHistory = (payload: SearchDetails) => ({
+export const getHistory = (payload: DataDetails) => ({
     type: GET_HISTORY,
     payload,
 });

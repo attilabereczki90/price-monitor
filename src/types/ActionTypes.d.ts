@@ -1,4 +1,4 @@
-export type SearchDetails = {
+export type DataDetails = {
   securityTicker: string;
   timeSeries: typeof TimeSeries[number];
 };

@@ -1,6 +1,10 @@
-import IAction, { SearchDetails } from '../types/ActionTypes';
+import IAction, { DataDetails } from '../types/ActionTypes';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { GET_HISTORY, GET_HISTORY_DONE, HISTORY_ERROR } from '../actions/monitor/types';
+import {
+  GET_HISTORY,
+  GET_HISTORY_DONE,
+  HISTORY_ERROR,
+} from '../actions/monitor/types';
 import { LOADING } from '../actions/app/types';
 
 const baseURL = 'https://www.alphavantage.co/query?';
@@ -14,7 +18,7 @@ function fetchApi(url: string) {
     .catch((error) => {throw error})
 }
 
-export function* getHistory(action: IAction<SearchDetails>) {
+export function* getHistory(action: IAction<DataDetails>) {
   try {
     if(action.payload) {
       const { securityTicker, timeSeries } = action.payload;

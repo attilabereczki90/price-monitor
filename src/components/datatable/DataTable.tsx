@@ -7,7 +7,7 @@ const createData = (id: number, date: string, seriesData: TimeSeriesData) => {
 }
 
 const DataTable = (props: any): JSX.Element => {
-  const { data } = props;
+  const { data, timeSeries } = props;
 
   const columns: GridColDef[] = [
     {
@@ -31,7 +31,7 @@ const DataTable = (props: any): JSX.Element => {
       rows.push(createData(rows.length, date, seriesData));
     }
 
-    return rows;
+    return rows.slice(0, 30);
   };
 
   const buildMetaData = (metaSource: MetaData) => {
@@ -49,7 +49,7 @@ const DataTable = (props: any): JSX.Element => {
             Symbol: {buildMetaData(data['Meta Data'])[1]}, Last Refreshed: {buildMetaData(data['Meta Data'])[2]}
           </p>
           <DataGrid
-            rows={buildTableData(data['Monthly Time Series'])}
+            rows={buildTableData(data[timeSeries])}
             columns={columns}
             pageSize={10}
             rowsPerPageOptions={[10]}

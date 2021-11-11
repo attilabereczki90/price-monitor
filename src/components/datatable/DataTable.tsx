@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { MetaData, TimeSeriesData } from './DataTable.d';
+import { TimeSeriesData } from './DataTable.d';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import MonitorHeader from '../monitorheader/MonitorHeader';
+import { createData } from '../../utils';
+import { IDataProps } from '../../types/GlobalTypes';
 
-const createData = (id: number, date: string, seriesData: TimeSeriesData) => {
-  return { id, date, open: seriesData['1. open'], high: seriesData['2. high'], low: seriesData['3. low'], close: seriesData['4. close'] }
-}
-
-const DataTable = (props: any): JSX.Element => {
+const DataTable = (props: IDataProps): JSX.Element => {
   const { data, timeSeries } = props;
   const [pageSize, setPageSize] = useState<number>(10);
 
@@ -29,26 +28,17 @@ const DataTable = (props: any): JSX.Element => {
     for (const property in object) {
       const date = property;
       const seriesData: any = object[property];
-      rows.push(createData(rows.length, date, seriesData));
+      rows.push(createData(date, seriesData, rows.length));
     }
 
     return rows.slice(0, 30);
-  };
-
-  const buildMetaData = (metaSource: MetaData) => {
-    const information = metaSource['1. Information'];
-    const symbol = metaSource['2. Symbol'];
-    const lastRefreshed = metaSource['3. Last Refreshed'];
-    return [information, symbol, lastRefreshed];
   };
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
       {data && (
         <>
-          <p>
-          Symbol: {buildMetaData(data['Meta Data'])[1]}, Last Refreshed: {new Date(buildMetaData(data['Meta Data'])[2]).toLocaleDateString('en-US')}
-          </p>
+          <MonitorHeader data={data} />
           <DataGrid
             rows={buildTableData(data[timeSeries])}
             columns={columns}

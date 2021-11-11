@@ -15,14 +15,12 @@ import {
   MouseCoordinateY,
   HoverTooltip,
 } from 'react-financial-charts';
-import { MetaData, TimeSeriesData } from '../datatable/DataTable.d';
+import { TimeSeriesData } from '../datatable/DataTable.d';
 import { CandlestickData } from './DataChart.d';
 import './DataChart.css';
-import { colors } from '../../utils';
-
-const createData = (date: string, seriesData: TimeSeriesData) => {
-  return { date, open: +seriesData['1. open'], high: +seriesData['2. high'], low: +seriesData['3. low'], close: +seriesData['4. close'], volume: +seriesData['5. volume'] }
-}
+import { colors, createData } from '../../utils';
+import MonitorHeader from '../monitorheader/MonitorHeader';
+import { IDataProps } from '../../types/GlobalTypes';
 
 const generateData = (object: { [index: string]: TimeSeriesData }[]) => {
   let rows = [];
@@ -34,13 +32,6 @@ const generateData = (object: { [index: string]: TimeSeriesData }[]) => {
   }
 
   return rows.slice(0, 30);
-};
-
-const buildMetaData = (metaSource: MetaData) => {
-  const information = metaSource['1. Information'];
-  const symbol = metaSource['2. Symbol'];
-  const lastRefreshed = metaSource['3. Last Refreshed'];
-  return [information, symbol, lastRefreshed];
 };
 
 const barChartExtents = (data: CandlestickData) => {
@@ -69,7 +60,7 @@ const openCloseColor = (data: CandlestickData) => {
   return data.close > data.open ? colors.cyan : colors.red;
 };
 
-const CandlestickDataChart = (props: any): JSX.Element => {
+const CandlestickDataChart = (props: IDataProps): JSX.Element => {
   const { data, timeSeries } = props;
   const height = 800;
   const width = 1200;
@@ -101,9 +92,7 @@ const CandlestickDataChart = (props: any): JSX.Element => {
 
   return (
     <>
-      <p>
-        Symbol: {buildMetaData(data['Meta Data'])[1]}, Last Refreshed: {new Date(buildMetaData(data['Meta Data'])[2]).toLocaleDateString('en-US')}
-      </p>
+      <MonitorHeader data={data} />
       <ChartCanvas
         className="monitor-chart"
         height={height}
@@ -122,7 +111,7 @@ const CandlestickDataChart = (props: any): JSX.Element => {
             <BarSeries fillStyle={volumeColor} yAccessor={volumeSeries} />
         </Chart>
         <Chart id={3} height={chartHeight} yExtents={candleChartExtents}>
-          <XAxis gridLinesStrokeStyle="#e0e3eb" ticks={25} showTicks={false} fontSize={12} />
+          <XAxis gridLinesStrokeStyle={colors.tealishBlue} ticks={25} showTicks={false} fontSize={12} />
           <YAxis showGridLines tickFormat={pricesDisplayFormat} axisAt={'left'} orient={'left'} />
           <CandlestickSeries />
           <MouseCoordinateY rectWidth={margin.right} displayFormat={pricesDisplayFormat} />

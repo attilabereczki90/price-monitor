@@ -1,12 +1,26 @@
 import React, { useState } from 'react';
-import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+} from '@mui/material';
 import { connect, useDispatch } from 'react-redux';
 import { DataDetails } from '../types/ActionTypes';
 import { getHistory } from '../actions/monitor/MonitorActions';
 import { AppReducerState, MonitorReducerState } from '../types/ReducerTypes';
 import DataTable from '../components/datatable/DataTable';
 import { useEffect } from 'react';
-import DataChart from '../components/datachart/DataChart';
+import CandlestickDataChart from '../components/datachart/CandlestickDataChart';
 
 interface IStateToProps {
   monitor: MonitorReducerState[];
@@ -21,10 +35,10 @@ const MonitorPage = (props: any): JSX.Element => {
   };
 
   const timeFrame = {
-    TIME_SERIES_MONTHLY: "Monthly Time Series",
-    TIME_SERIES_WEEKLY: "Weekly Time Series",
-    TIME_SERIES_DAILY: "Time Series (Daily)",
-    TIME_SERIES_INTRADAY: "Time Series (5min)",
+    TIME_SERIES_MONTHLY: 'Monthly Time Series',
+    TIME_SERIES_WEEKLY: 'Weekly Time Series',
+    TIME_SERIES_DAILY: 'Time Series (Daily)',
+    TIME_SERIES_INTRADAY: 'Time Series (5min)',
   };
 
   const [searchDetails, setSearchDetails] = useState(initialSearchDetails);
@@ -129,7 +143,7 @@ const MonitorPage = (props: any): JSX.Element => {
       </div>
       {Object.keys(monitor.tickerData).length > 0 && (
         // <DataTable data={monitor.tickerData} timeSeries={timeFrame[searchDetails.timeSeries]} />
-        <DataChart data={monitor.tickerData} timeSeries={timeFrame[searchDetails.timeSeries]} />
+        <CandlestickDataChart data={monitor.tickerData} timeSeries={timeFrame[searchDetails.timeSeries]} />
       )}
       <Dialog
         open={open}
@@ -138,7 +152,7 @@ const MonitorPage = (props: any): JSX.Element => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Warning"}
+          {'Warning'}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

@@ -1,5 +1,5 @@
-import { LOADING } from "../actions/app/types";
-import { AppReducerState } from "../types/ReducerTypes";
+import { LOADING } from '../actions/app/types';
+import { AppReducerState } from '../types/ReducerTypes';
 
 const initialState: AppReducerState = {
   isLoading: false,

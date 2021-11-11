@@ -1,7 +1,7 @@
-import { combineReducers, ReducersMapObject } from "@reduxjs/toolkit";
-import { Reducer } from "redux";
-import AppReducer from "./AppReducer";
-import MonitorReducer from "./MonitorReducer";
+import { combineReducers, ReducersMapObject } from '@reduxjs/toolkit';
+import { Reducer } from 'redux';
+import AppReducer from './AppReducer';
+import MonitorReducer from './MonitorReducer';
 
 const reducerMap: ReducersMapObject = {
   monitor: MonitorReducer,

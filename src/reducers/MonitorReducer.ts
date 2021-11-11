@@ -1,10 +1,10 @@
-import { GET_HISTORY_DONE, HISTORY_ERROR } from "../actions/monitor/types";
-import { MonitorReducerState } from "../types/ReducerTypes";
+import { GET_HISTORY_DONE, HISTORY_ERROR } from '../actions/monitor/types';
+import { MonitorReducerState } from '../types/ReducerTypes';
 
 const initialState: MonitorReducerState = {
   tickerData: {},
   error: false,
-  errorMessage: "",
+  errorMessage: '',
 };
 
 const MonitorReducer = (state = initialState, action: any) => {

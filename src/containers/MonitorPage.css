@@ -1,0 +1,36 @@
+@keyframes changeColor {
+  12.5% {
+    color: #ac0000;
+  }
+  25% {
+    color: #aa6f00;
+  }
+  37.5% {
+    color: #a7a700;
+  }
+  50% {
+    color: #53a700;
+  }
+  62.5% {
+    color: #009e9e;
+  }
+  75% {
+    color: #0000bb;
+  }
+  87.5% {
+    color: #882db6;
+  }
+  100% {
+    color: #ac1465;
+  }
+}
+
+.loading-label {
+  font-weight: bold;
+  margin-left: 1em;
+  color: #696969;
+}
+
+.ticker-search-input input {
+  text-transform: uppercase;
+}

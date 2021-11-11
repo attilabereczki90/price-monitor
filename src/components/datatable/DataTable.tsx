@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MetaData, TimeSeriesData } from './DataTable.d';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
@@ -8,6 +8,7 @@ const createData = (id: number, date: string, seriesData: TimeSeriesData) => {
 
 const DataTable = (props: any): JSX.Element => {
   const { data, timeSeries } = props;
+  const [pageSize, setPageSize] = useState<number>(10);
 
   const columns: GridColDef[] = [
     {
@@ -51,8 +52,9 @@ const DataTable = (props: any): JSX.Element => {
           <DataGrid
             rows={buildTableData(data[timeSeries])}
             columns={columns}
-            pageSize={10}
-            rowsPerPageOptions={[10]}
+            pageSize={pageSize}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            rowsPerPageOptions={[5, 10, 20, 30]}
           />
         </>
       )}

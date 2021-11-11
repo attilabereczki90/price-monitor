@@ -22,17 +22,15 @@ import {
   EdgeIndicator,
   MouseCoordinateX,
   MouseCoordinateY,
-  ZoomButtons,
   HoverTooltip,
 } from 'react-financial-charts';
 import { MetaData, TimeSeriesData } from '../datatable/DataTable.d';
 import { CandlestickData } from './DataChart.d';
+import './DataChart.css';
 
 const createData = (date: string, seriesData: TimeSeriesData) => {
   return { date, open: +seriesData['1. open'], high: +seriesData['2. high'], low: +seriesData['3. low'], close: +seriesData['4. close'], volume: +seriesData['5. volume'] }
 }
-
-
 
 const generateData = (object: { [index: string]: TimeSeriesData }[]) => {
   let rows = [];
@@ -58,7 +56,7 @@ const barChartExtents = (data: CandlestickData) => {
 };
 
 const candleChartExtents = (data: CandlestickData) => {
-  return [data.high * 1.05, data.low];
+  return [data.high, data.low];
 };
 
 const yEdgeIndicator = (data: CandlestickData) => {
@@ -81,9 +79,9 @@ const openCloseColor = (data: CandlestickData) => {
 
 const CandlestickDataChart = (props: any): JSX.Element => {
   const { data, timeSeries } = props;
-  const height = 700;
-  const width = 900;
-  const margin = { left: 0, right: 48, top: 0, bottom: 24 };
+  const height = 800;
+  const width = 1200;
+  const margin = { left: 48, right: 48, top: 40, bottom: 24 };
   const ScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor(
     (d: CandlestickData) => new Date(d.date)
   );
@@ -109,9 +107,16 @@ const CandlestickDataChart = (props: any): JSX.Element => {
   const { data: chartData, xScale, xAccessor, displayXAccessor } = ScaleProvider(calculatedData);
 
   const pricesDisplayFormat = format('.2f');
-  const volumeDisplayFormat = (volume: number) => (parseFloat(`${Math.abs(volume) / 1.0e+6}`).toFixed(2) + 'M');
+  const volumeDisplayFormat = (volume: number) => {
+    if(Math.abs(volume) >= 1.0e+6) {
+      return (Math.abs(volume) / 1.0e+6).toFixed(2) + 'M';
+    } else if(Math.abs(volume) >= 1.0e+3) {
+      return (Math.abs(volume) / 1.0e+3).toFixed(2) + 'k';
+    } else {
+      return Math.abs(volume);
+    }
+  };
   const dateTimeFormat = '%d %b';
-  const dateFormat = timeFormat('%Y-%m-%d');
   const timeDisplayFormat = timeFormat(dateTimeFormat);
   const max = xAccessor(chartData[chartData.length - 1]);
   const min = xAccessor(chartData[Math.max(0, chartData.length - 100)]);
@@ -129,6 +134,7 @@ const CandlestickDataChart = (props: any): JSX.Element => {
         Symbol: {buildMetaData(data['Meta Data'])[1]}, Last Refreshed: {buildMetaData(data['Meta Data'])[2]}
       </p>
       <ChartCanvas
+        className="monitor-chart"
         height={height}
         width={width}
         margin={margin}
@@ -145,8 +151,8 @@ const CandlestickDataChart = (props: any): JSX.Element => {
             <BarSeries fillStyle={volumeColor} yAccessor={volumeSeries} />
         </Chart>
         <Chart id={3} height={chartHeight} yExtents={candleChartExtents}>
-            <XAxis showGridLines showTicks={false} showTickLabel={false} />
-            <YAxis showGridLines tickFormat={pricesDisplayFormat} />
+            <XAxis showGridLines showTicks={false} showTickLabel={false}  />
+            <YAxis showGridLines tickFormat={pricesDisplayFormat} axisAt={'left'} orient={'left'} />
             <CandlestickSeries />
             <LineSeries yAccessor={ema15.accessor()} strokeStyle={ema15.stroke()} />
             <CurrentCoordinate yAccessor={ema15.accessor()} fillStyle={ema15.stroke()} />
@@ -162,7 +168,7 @@ const CandlestickDataChart = (props: any): JSX.Element => {
                 yAccessor={yEdgeIndicator}
             />
             <MovingAverageTooltip
-                origin={[8, 24]}
+                origin={[8, -28]}
                 options={[
                   {
                     yAccessor: ema15.accessor(),
@@ -179,13 +185,12 @@ const CandlestickDataChart = (props: any): JSX.Element => {
                 ]}
             />
 
-            <ZoomButtons />
-            <OHLCTooltip origin={[8, 16]} />
+            <OHLCTooltip origin={[8, -32]} />
             <HoverTooltip
               yAccessor={ema8.accessor()}
               tooltip={{
-                content: ({ currentItem, xAccessor }) => ({
-                  x: dateFormat(xAccessor(currentItem)),
+                content: ({ currentItem }) => ({
+                  x: currentItem.date,
                   y: [
                     {
                       label: 'open',
@@ -219,8 +224,8 @@ const CandlestickDataChart = (props: any): JSX.Element => {
             origin={elderRayOrigin}
             padding={{ top: 8, bottom: 8 }}
         >
-            <XAxis showGridLines gridLinesStrokeStyle="#e0e3eb" />
-            <YAxis ticks={4} tickFormat={pricesDisplayFormat} />
+            <XAxis gridLinesStrokeStyle="#e0e3eb" ticks={25} showTicks={false} fontSize={12} />
+            <YAxis ticks={4} tickFormat={pricesDisplayFormat} axisAt={'left'} orient={'left'} fontSize={14} />
 
             <MouseCoordinateX displayFormat={timeDisplayFormat} />
             <MouseCoordinateY rectWidth={margin.right} displayFormat={pricesDisplayFormat} />

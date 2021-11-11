@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
+  Switch,
   TextField,
 } from '@mui/material';
 import { connect, useDispatch } from 'react-redux';
@@ -21,6 +22,7 @@ import { AppReducerState, MonitorReducerState } from '../types/ReducerTypes';
 import DataTable from '../components/datatable/DataTable';
 import { useEffect } from 'react';
 import CandlestickDataChart from '../components/datachart/CandlestickDataChart';
+import './MonitorPage.css';
 
 interface IStateToProps {
   monitor: MonitorReducerState[];
@@ -42,6 +44,7 @@ const MonitorPage = (props: any): JSX.Element => {
   };
 
   const [searchDetails, setSearchDetails] = useState(initialSearchDetails);
+  const [toggleView, setToggleView] = useState(false);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
@@ -53,17 +56,24 @@ const MonitorPage = (props: any): JSX.Element => {
 
   const handleSearchTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target) {
+      const { value } = event.target;
+      setSearchDetails({
+        ...searchDetails,
+        securityTicker: value.toUpperCase(),
+      });
+    }
+  };
+
+  const handleSeriesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target) {
       const { name, value } = event.target;
-      if (name === 'security-ticker') {
-        setSearchDetails({
-          ...searchDetails,
-          securityTicker: value.toUpperCase(),
-        });
-      } else {
-        setSearchDetails({
-          ...searchDetails,
-          [name]: value,
-        });
+      const newSearchDetails = {
+        ...searchDetails,
+        [name]: value,
+      };
+      setSearchDetails(newSearchDetails);
+      if(searchDetails.securityTicker.length > 0) {
+        dispatch(getHistory(newSearchDetails));
       }
     }
   };
@@ -76,11 +86,15 @@ const MonitorPage = (props: any): JSX.Element => {
     setOpen(false);
   };
 
+  const handleViewChange = () => {
+    setToggleView(!toggleView);
+  };
+
   return (
     <div className="container">
       <div className="search-container">
         <TextField
-          id="tickerSearchInput"
+          className="ticker-search-input"
           name="security-ticker"
           sx={
             {
@@ -95,16 +109,14 @@ const MonitorPage = (props: any): JSX.Element => {
           onChange={handleSearchTextChange}
         />
         <Button
-          id="tickerSearchButton"
-          variant="outlined"
+          className="ticker-search-button"
+          sx={{
+            margin: '10px',
+          }}
+          variant="contained"
           disabled={!searchDetails.securityTicker}
           onClick={() => handleSearch()}
          >Search</Button>
-         {app.isLoading &&
-          <Box sx={{ display: 'flex' }}>
-            <CircularProgress />
-          </Box>
-         }
          <FormControl component="fieldset">
           <RadioGroup
             row
@@ -112,7 +124,7 @@ const MonitorPage = (props: any): JSX.Element => {
             name="timeSeries"
             value={searchDetails.timeSeries}
             defaultValue="TIME_SERIES_MONTHLY"
-            onChange={handleSearchTextChange}
+            onChange={handleSeriesChange}
           >
             <FormControlLabel
               value="TIME_SERIES_MONTHLY"
@@ -140,11 +152,38 @@ const MonitorPage = (props: any): JSX.Element => {
             />
           </RadioGroup>
         </FormControl>
+        <div className="toggle-input">
+            Chart
+            <Switch
+              checked={toggleView}
+              onChange={handleViewChange}
+              inputProps={{ "aria-label": "primary checkbox" }}
+            />
+            Table
+          </div>
       </div>
-      {Object.keys(monitor.tickerData).length > 0 && (
-        // <DataTable data={monitor.tickerData} timeSeries={timeFrame[searchDetails.timeSeries]} />
-        <CandlestickDataChart data={monitor.tickerData} timeSeries={timeFrame[searchDetails.timeSeries]} />
-      )}
+      {app.isLoading &&
+        <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            backgroundColor: 'white',
+          }}>
+          <CircularProgress sx={{
+            animation: 'MuiCircularProgress-keyframes-circular-rotate 1.4s linear infinite, changeColor 2s linear infinite',
+          }} />
+          <p className="loading-label">Please wait</p>
+        </Box>
+      }
+      {!app.isLoading && Object.keys(monitor.tickerData).length > 0 && toggleView && (
+          <DataTable data={monitor.tickerData} timeSeries={timeFrame[searchDetails.timeSeries]} />
+        )
+      }
+      {!app.isLoading && Object.keys(monitor.tickerData).length > 0 && !toggleView && (
+          <CandlestickDataChart data={monitor.tickerData} timeSeries={timeFrame[searchDetails.timeSeries]} />
+        )
+      }
       <Dialog
         open={open}
         onClose={handleClose}

@@ -195,7 +195,7 @@ const MonitorPage = (props: any): JSX.Element => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            There is no match. Please try another symbol.
+            There is no match for this search term. Please try another symbol.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

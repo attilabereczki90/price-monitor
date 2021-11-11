@@ -47,7 +47,7 @@ const DataTable = (props: any): JSX.Element => {
       {data && (
         <>
           <p>
-            Symbol: {buildMetaData(data['Meta Data'])[1]}, Last Refreshed: {buildMetaData(data['Meta Data'])[2]}
+          Symbol: {buildMetaData(data['Meta Data'])[1]}, Last Refreshed: {new Date(buildMetaData(data['Meta Data'])[2]).toLocaleDateString('en-US')}
           </p>
           <DataGrid
             rows={buildTableData(data[timeSeries])}

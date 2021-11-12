@@ -184,6 +184,15 @@ const MonitorPage = (props: any): JSX.Element => {
           <CandlestickDataChart data={monitor.tickerData} timeSeries={timeFrame[searchDetails.timeSeries]} />
         )
       }
+      {!app.isLoading && Object.keys(monitor.tickerData).length === 0 && (
+        <div>
+          <h3>How to use</h3>
+          <p>- Type any valid Security Ticker</p>
+          <p>- Change Time Period or Click on Search button to see result</p>
+          <p>- Switch view and check result in Chart or Table format</p>
+          <p>Note: The chart/table reloads every Time period change.</p>
+        </div>
+      )}
       <Dialog
         open={openModal}
         onClose={handleClose}

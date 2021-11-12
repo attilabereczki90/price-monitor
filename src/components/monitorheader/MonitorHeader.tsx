@@ -1,5 +1,6 @@
 import React from 'react';
 import { MetaData } from '../../types/GlobalTypes.d';
+import './MonitorHeader.css';
 
 const buildMetaData = (metaSource: MetaData) => {
   const information = metaSource['1. Information'];
@@ -12,9 +13,20 @@ const MonitorHeader = (props: any): JSX.Element => {
   const { data } = props;
 
   return (
-  <p>
-    Symbol: {buildMetaData(data['Meta Data'])[1]}, Last Refreshed: {new Date(buildMetaData(data['Meta Data'])[2]).toLocaleDateString('en-US')}
-  </p>
+   <div className="monitor-header">
+    <p>
+      <b>Symbol:</b> {buildMetaData(data['Meta Data'])[1]}
+    </p>
+    <p>
+      <b>Last Refreshed:</b> {new Date(buildMetaData(data['Meta Data'])[2]).toLocaleDateString('en-US')}
+    </p>
+    <p>
+      <b>Time Zone:</b> {new Date(buildMetaData(data['Meta Data'])[2]).toLocaleDateString('en-US')}
+    </p>
+    <p>
+      <b>Information:</b> {buildMetaData(data['Meta Data'])[0]}, Last Refreshed: {new Date(buildMetaData(data['Meta Data'])[2]).toLocaleDateString('en-US')}
+    </p>
+   </div>
   );
 }
 

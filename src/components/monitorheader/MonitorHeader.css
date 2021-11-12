@@ -1,0 +1,9 @@
+.monitor-header p {
+  margin: 0;
+  text-align: left;
+  font-size: 12px;
+}
+
+.monitor-header p:last-child {
+  margin: 0 0 10px 0;
+}

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { TimeSeriesData } from './DataTable.d';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import MonitorHeader from '../monitorheader/MonitorHeader';
 import { createData } from '../../utils';
-import { IDataProps } from '../../types/GlobalTypes';
+import { IDataProps, TimeSeriesData } from '../../types/GlobalTypes.d';
 
 const DataTable = (props: IDataProps): JSX.Element => {
   const { data, timeSeries } = props;
@@ -21,6 +20,7 @@ const DataTable = (props: IDataProps): JSX.Element => {
     { field: 'low', headerName: 'Low', width: 130, type: 'number' },
     { field: 'close', headerName: 'Close', width: 130, type: 'number' },
   ];
+  const rowsPerPageOptions = [5, 10, 20, 30];
   
   const buildTableData = (object: { [index: string]: TimeSeriesData }[]) => {
     let rows = [];
@@ -44,7 +44,7 @@ const DataTable = (props: IDataProps): JSX.Element => {
             columns={columns}
             pageSize={pageSize}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-            rowsPerPageOptions={[5, 10, 20, 30]}
+            rowsPerPageOptions={rowsPerPageOptions}
           />
         </>
       )}

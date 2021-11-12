@@ -15,12 +15,11 @@ import {
   MouseCoordinateY,
   HoverTooltip,
 } from 'react-financial-charts';
-import { TimeSeriesData } from '../datatable/DataTable.d';
 import { CandlestickData } from './DataChart.d';
 import './DataChart.css';
 import { colors, createData } from '../../utils';
 import MonitorHeader from '../monitorheader/MonitorHeader';
-import { IDataProps } from '../../types/GlobalTypes';
+import { IDataProps, TimeSeriesData } from '../../types/GlobalTypes.d';
 
 const generateData = (object: { [index: string]: TimeSeriesData }[]) => {
   let rows = [];

@@ -1,4 +1,4 @@
-import { TimeSeriesData } from "./components/datatable/DataTable.d";
+import { TimeSeriesData } from './types/GlobalTypes.d';
 
 export const colors = {
   cyan: 'rgb(38, 166, 154)',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MetaData } from '../datatable/DataTable.d';
+import { MetaData } from '../../types/GlobalTypes.d';
 
 const buildMetaData = (metaSource: MetaData) => {
   const information = metaSource['1. Information'];

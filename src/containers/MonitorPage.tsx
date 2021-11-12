@@ -45,12 +45,12 @@ const MonitorPage = (props: any): JSX.Element => {
 
   const [searchDetails, setSearchDetails] = useState(initialSearchDetails);
   const [toggleView, setToggleView] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if(monitor.error) {
-      setOpen(true);
+      setOpenModal(true);
     }
   }, [monitor]);
 
@@ -72,7 +72,7 @@ const MonitorPage = (props: any): JSX.Element => {
         [name]: value,
       };
       setSearchDetails(newSearchDetails);
-      if(searchDetails.securityTicker.length > 0) {
+      if(searchDetails.securityTicker.length) {
         dispatch(getHistory(newSearchDetails));
       }
     }
@@ -83,7 +83,7 @@ const MonitorPage = (props: any): JSX.Element => {
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpenModal(false);
   };
 
   const handleViewChange = () => {
@@ -167,7 +167,7 @@ const MonitorPage = (props: any): JSX.Element => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '100vh',
+            height: '70vh',
             backgroundColor: 'white',
           }}>
           <CircularProgress sx={{
@@ -185,13 +185,13 @@ const MonitorPage = (props: any): JSX.Element => {
         )
       }
       <Dialog
-        open={open}
+        open={openModal}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {'Warning'}
+          Warning
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

@@ -24,7 +24,7 @@ const MonitorHeader = (props: any): JSX.Element => {
       <b>Time Zone:</b> {new Date(buildMetaData(data['Meta Data'])[2]).toLocaleDateString('en-US')}
     </p>
     <p>
-      <b>Information:</b> {buildMetaData(data['Meta Data'])[0]}, Last Refreshed: {new Date(buildMetaData(data['Meta Data'])[2]).toLocaleDateString('en-US')}
+      <b>Information:</b> {buildMetaData(data['Meta Data'])[0]}
     </p>
    </div>
   );

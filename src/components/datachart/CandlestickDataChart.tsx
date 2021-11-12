@@ -61,7 +61,7 @@ const openCloseColor = (data: CandlestickData) => {
 
 const CandlestickDataChart = (props: IDataProps): JSX.Element => {
   const { data, timeSeries } = props;
-  const height = 800;
+  const height = 700;
   const width = 1200;
   const margin = { left: 48, right: 48, top: 40, bottom: 24 };
   const ScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor(
@@ -84,10 +84,8 @@ const CandlestickDataChart = (props: IDataProps): JSX.Element => {
   const min = xAccessor(chartData[Math.max(0, chartData.length - 100)]);
   const xExtents = [min - 1, max + 1];
   const gridHeight = height - margin.top - margin.bottom;
-  const elderRayHeight = 100;
   const barChartHeight = gridHeight / 4;
-  const chartHeight = gridHeight - elderRayHeight;
-  const barChartOrigin = (_: number, h: number) => [0, h - barChartHeight - elderRayHeight];
+  const barChartOrigin = (_: number, h: number) => [0, h - barChartHeight];
 
   return (
     <>
@@ -109,7 +107,7 @@ const CandlestickDataChart = (props: IDataProps): JSX.Element => {
         <Chart id={2} height={barChartHeight} origin={barChartOrigin} yExtents={barChartExtents}>
             <BarSeries fillStyle={volumeColor} yAccessor={volumeSeries} />
         </Chart>
-        <Chart id={3} height={chartHeight} yExtents={candleChartExtents}>
+        <Chart id={3} height={gridHeight} yExtents={candleChartExtents}>
           <XAxis gridLinesStrokeStyle={colors.tealishBlue} ticks={25} showTicks={false} fontSize={12} />
           <YAxis showGridLines tickFormat={pricesDisplayFormat} axisAt={'left'} orient={'left'} />
           <CandlestickSeries />
